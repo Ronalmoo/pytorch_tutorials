@@ -89,4 +89,3 @@ for i in range(len(face_dataset)):
 # Transforms
 
 
-class Rescale(object):
