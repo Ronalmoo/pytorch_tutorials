@@ -3,6 +3,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
 
 
 class Net(nn.Module):
@@ -83,3 +84,28 @@ loss.backward()
 
 print('conv1.bias.grad after backward')
 print(net.conv1.bias.grad)
+
+
+# Update the weights
+# The simplest update rule used in practice is the Stochastic Gradient Descent(SGD)
+
+# weight = weight - learning_rate * gradient
+
+# in python code:
+learning_rate = 0.01
+for f in net.parameters():
+    f.data.sub_(f.grad.data * learning_rate)
+
+# Using torch.optim
+# import torch.optim as optim
+
+# create your optimizer
+optimizer = optim.SGD(net.parameters(), lr=0.01)
+
+# in your training loop:
+optimizer.zero_grad() # zero the gradient buffers
+output = net(input)
+loss = criterion(output, target)
+loss.backward()
+optimizer.step() # Does the update
+
